@@ -224,6 +224,7 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 ## Contact
 
 Mojtaba Norouzi
+
 📧 mojtaba_norouzi77@alumni.iust.ac.ir
 
 🔗 [LinkedIn](www.linkedin.com/in/mojtaba-norouzi-2522a0206)
