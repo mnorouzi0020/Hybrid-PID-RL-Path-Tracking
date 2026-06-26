@@ -11,24 +11,7 @@
 
 ## Abstract
 
-Path tracking controllers are crucially important in the performance and safety of autonomous vehicles.
-These controllers must enable a vehicle to accurately follow a predefined trajectory while maintaining
-stability under varying road and weather conditions — including icy or rainy roads — which plays a
-significant role in assessing controller efficacy.
-
-The PID controller is widely used for its acceptable performance with fixed gains, while
-reinforcement learning-based controllers (notably PPO) offer adaptive and accurate results through
-environmental interaction. However, RL controllers face two major challenges: **parameter tuning**
-and **fluctuating control signals**.
-
-To address these issues, we propose a novel combination consisting of:
-1. A modified neural network structure (**LipsNet** — a Lipschitz-constrained actor network)
-2. Two alterations to the PPO loss function (**CAPS** — Consistent Action Policy Smoothing)
-
-We then evaluate and compare PID, pure RL, and the hybrid PID–RL approach. Results show that while
-the fixed PID fails under low-friction conditions, the **PID–RL combination outperforms each
-individual method**, achieving superior path-tracking performance in both normal and challenging
-road conditions.
+Path tracking controllers are crucially important in the performance and safety of autonomous vehicles. These controllers’ main duty is enabling the vehicle to accurately follow a predefined trajectory while maintaining stability and avoiding deviations, which becomes even more challenging in varying road and weather conditions, where maintaining accuracy and safety is critical. The controller must be able to handle sharp turns and adapt to varying road conditions, such as icy or rainy roads, which plays a significant role in assessing the efficacy of a path-tracking controller. The PID controller is widely used for its acceptable performance with fixed gains, while reinforcement learning-based controllers, such as the extensively used PPO algorithm, offer adaptive and accurate results through environmental interaction. However, when considering RL controllers, we face two major challenges: parameter tuning and fluctuating control signals. To address these issues, we propose a novel combination. One modifies the neural network structure, and the other incorporates two alterations in the algorithm’s loss function, resulting in parameter robustness and reduction in control signal fluctuations. Then, we evaluate and compare the performance of the PID controller and the RL-based controller. Our comparison focuses on path-tracking accuracy, highlighting the trade-offs between traditional and adaptive control methods under challenging conditions. Initial results show that the RL-based controller performs worse than the PID with fixed gains and reference speed, while the fixed PID lacks high path-tracking accuracy. Moreover, we propose a hybrid approach where RL optimizes the PID controller for adaptive gain and reference speed adjustment. Results show that while the fixed PID fails in low-friction conditions, the PID-RL combination outperforms each method alone, achieving superior performance in both normal and challenging road conditions. These results illustrate the potential of hybrid approaches in optimizing control systems for autonomous vehicles, particularly in enhancing path-tracking performance under varying road conditions.
 
 ---
 
@@ -36,8 +19,7 @@ road conditions.
 
 | Contribution | Description |
 |---|---|
-| **LipsNet** | Lipschitz-constrained actor network that enforces bounded output sensitivity, improving parameter robustness |
-| **CAPS Loss** | Temporal (LT) and spatial (LS) smoothness penalties added to the PPO loss function to reduce control signal chattering |
+| ** Combination of LipsNet and CAPS** | Lipschitz-constrained actor network that enforces bounded output sensitivity, improving parameter robustness, is combined with Temporal (LT) and spatial (LS) smoothness penalties added to the PPO loss function to reduce control signal chattering|
 | **Hybrid Architecture** | RL adaptively tunes PID gains (Kp, Ki, Kd) and reference speed in real time, combining the interpretability of PID with the adaptability of RL |
 | **Low-Friction Evaluation** | Systematic comparison under reduced tire–road friction (Fry scaled), where the fixed PID fails and the hybrid succeeds |
 
@@ -47,8 +29,8 @@ road conditions.
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│                        State (38-dim)                    │
-│  [position, heading, Vx, Vy, β, αf, αr, ω,              │
+│                          State                           │
+│  [position, heading, Vx, Vy, β, αf, αr, ω,               │
 │   pos_error, ang_error, checkpoints, future path]        │
 └────────────────────────────┬─────────────────────────────┘
                              │
@@ -58,18 +40,17 @@ road conditions.
                     └────────┬────────┘
                              │
               ┌──────────────▼──────────────┐
-              │   Action (4-dim)             │
+              │   Action (4-dim)            │
               │  [Ref. Speed, Kp, Ki, Kd]   │
               └──────────────┬──────────────┘
                              │
             ┌────────────────▼────────────────┐
-            │       PID Steering Controller    │
-            │   δ = Kp·e_pos + Ki·∫e + Kd·ė  │
+            │       PID Steering Controller   │
+            │   δ = Kp·e_pos + Ki·∫e + Kd·ė   │
             └────────────────┬────────────────┘
                              │
             ┌────────────────▼────────────────┐
-            │   Non-Linear Bicycle Model       │
-            │   (Pacejka lateral tire forces)  │
+            │   Non-Linear Bicycle Model      │
             └─────────────────────────────────┘
 ```
 
@@ -86,7 +67,7 @@ and `LS` is the spatial smoothness penalty (divergence between actions at nearby
 
 ## Vehicle Model
 
-The vehicle is simulated using a **Non-Linear Bicycle Model** with Pacejka-inspired lateral tire forces:
+The vehicle is simulated using a **Non-Linear Bicycle Model**:
 
 | Parameter | Value |
 |---|---|
@@ -113,8 +94,8 @@ State variables tracked: `Vx, Vy, β (sideslip), αf (front slip), αr (rear sli
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-cd YOUR_REPO_NAME
+git clone https://github.com/mnorouzi0020/Hybrid-PID-RL-Path-Tracking.git
+cd mnorouzi0020
 
 # 2. Create and activate a virtual environment
 python -m venv venv
@@ -133,7 +114,7 @@ pip install -r requirements.txt
 
 ```python
 # In main.py, set:
-mode = True          # Training mode
+mode = True          # Training mode (Training)
 save_model = True    # Save weights after training
 load_model = False   # Start fresh
 
@@ -207,12 +188,15 @@ all tested road conditions, particularly excelling when friction coefficients ar
 If you use this code in your research, please cite:
 
 ```bibtex
-@article{YOURNAME2024hybrid,
-  title   = {Hybrid PID-RL Path Tracking Controller for Autonomous Vehicles under Varying Road Conditions},
-  author  = {YOUR NAME and CO-AUTHORS},
-  journal = {YOUR JOURNAL / CONFERENCE},
-  year    = {2024},
-  url     = {YOUR_ARXIV_OR_DOI_LINK}
+@article{norouzi2026reinforcement,
+  title={Reinforcement learning-based controller for path tracking of an autonomous vehicle},
+  author={Norouzi, Mojtaba and Poshtan, Javad},
+  journal={Proceedings of the Institution of Mechanical Engineers, Part D: Journal of Automobile Engineering},
+  volume={240},
+  number={6},
+  pages={3340--3363},
+  year={2026},
+  publisher={SAGE Publications Sage UK: London, England}
 }
 ```
 
@@ -239,10 +223,8 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 ## Contact
 
-**Your Name**  
-📧 your.email@institution.edu  
-🔗 [LinkedIn](https://linkedin.com/in/yourprofile) | [Google Scholar](https://scholar.google.com/citations?user=YOURID)
+Mojtaba Norouzi
+📧 mojtaba_norouzi77@alumni.iust.ac.ir
+🔗 [LinkedIn](www.linkedin.com/in/mojtaba-norouzi-2522a0206)
 
 ---
-
-*Part of ongoing research into hybrid control architectures for autonomous vehicle systems.*
