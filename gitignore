@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Virtual environments
+venv/
+env/
+.env/
+.venv/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# TensorFlow / Keras
+saved_models/
+*.h5
+*.keras
+*.pb
+*.ckpt
+*.index
+*.data-*
+checkpoint
+
+# TensorBoard logs
+logs/
+runs/
+tb_logs/
+
+# Results and outputs (keep directory, ignore contents)
+results/*
+!results/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Large data files
+*.npy
+*.npz
+*.pkl
+*.hdf5
