@@ -19,7 +19,7 @@ Path tracking controllers are crucially important in the performance and safety 
 
 | Contribution | Description |
 |---|---|
-| ** Combination of LipsNet and CAPS** | Lipschitz-constrained actor network that enforces bounded output sensitivity, improving parameter robustness, is combined with Temporal (LT) and spatial (LS) smoothness penalties added to the PPO loss function to reduce control signal chattering|
+| ** Combination of LipsNet and CAPS** | Lipschitz-constrained actor network that enforces bounded output sensitivity is combined with Temporal (LT) and spatial (LS) smoothness penalties added to the PPO loss function to reduce control signal chattering|
 | **Hybrid Architecture** | RL adaptively tunes PID gains (Kp, Ki, Kd) and reference speed in real time, combining the interpretability of PID with the adaptability of RL |
 | **Low-Friction Evaluation** | Systematic comparison under reduced tire–road friction (Fry scaled), where the fixed PID fails and the hybrid succeeds |
 
