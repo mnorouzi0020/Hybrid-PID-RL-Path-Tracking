@@ -1,4 +1,5 @@
-# Hybrid PID–RL Path Tracking Controller for Autonomous Vehicles
+# Reinforcement learning-based controller for path tracking of an autonomous vehicle
+
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)](https://www.python.org/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-FF6F00?logo=tensorflow)](https://www.tensorflow.org/)
